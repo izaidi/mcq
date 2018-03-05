@@ -1,0 +1,42 @@
+* { margin: 0; padding: 0;}
+
+body, html {
+  width: 100%; 
+  height: 100%;
+}
+
+body {
+  background-color: black;
+}
+
+.torch {
+  background-image: url(../torch.png);
+  position: fixed;
+  z-index: 100;
+  left: 20%;
+  top: 12%;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.cauldron {
+  background-image: url(../cauldron.png);
+  position: fixed;
+  z-index: 100;
+  background-size: contain;
+  background-repeat: no-repeat;
+  left: 30%;
+  top: 30%;
+  width: 50%;
+}
+
+.spark, .flame {
+  display: inline-block;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+}
+
+canvas {
+  display: block;
+}
