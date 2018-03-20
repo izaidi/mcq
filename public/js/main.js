@@ -6,8 +6,11 @@ flameY = 0;
 
 lastAngle = 0;
 maxAngle = 180;
+ignitionAngle = 90;
 
 flameOn = false;
+
+TILT_INCREMENT = 5;
 
 $.fn.animateRotate = function(angle, duration, easing, complete) {
   var args = $.speed(duration, easing, complete);
@@ -26,6 +29,18 @@ $.fn.animateRotate = function(angle, duration, easing, complete) {
   });
 };
 
+function getIgnitionAngle() {
+  var torchHeight = $('.torch').height();
+  var torchY = $('.torch').offset().top;
+  var torchBottom = torchY + torchHeight;
+
+  var flameHeight = torchBottom - flameY;
+  var sparkHeight = torchBottom - sparkY;
+
+  var angle = Math.acos(flameHeight / sparkHeight);
+  ignitionAngle = angle * (180 / Math.PI);
+}
+
 function sizeFlames() {
   cauldronFlameSize = window.outerWidth / 20;
   torchFlameSize = window.outerWidth / 50;
@@ -35,7 +50,7 @@ function checkFlame() {
   if (flameOn) {
     return true;
   } else {
-    if (sparkY >= flameY) {
+    if (sparkY >= flameY - 5) {
       console.log('flame is lit!');
       flameOn = true;
       maxAngle = lastAngle;
@@ -91,15 +106,17 @@ function initTorch() {
   sizeCauldron();
   positionSpark();
   positionFlame();
+  getIgnitionAngle();
 };
 
 function decreaseTilt() {
-  $('.torch').animateRotate(lastAngle-5);
+  $('.torch').animateRotate(lastAngle-TILT_INCREMENT);
 }
 
 function increaseTilt() {
-  if (lastAngle + 5 > maxAngle) return false;
-  $('.torch').animateRotate(lastAngle+5);
+  if (lastAngle + TILT_INCREMENT > maxAngle) return false;
+  $('.torch').animateRotate(lastAngle+TILT_INCREMENT);
+  console.log(lastAngle);
 }
 
 $(document).keydown(function(e) {
@@ -117,6 +134,17 @@ $(document).keydown(function(e) {
   e.preventDefault(); // prevent the default action (scroll / move caret)
 });
 
+function initSocket() {
+  var socket = io.connect('http://localhost:3000');
+  socket.on('torch', function (data) {
+    console.log('Data received!');
+    var tiltAngle = Math.abs(data.verticalDeviations.maximum) * 90;
+    console.log('Rotating to ' + tiltAngle + ' degrees...');
+    $('.torch').animateRotate(tiltAngle);
+  });
+}
+
 $(document).ready(function() {
   initTorch();
+  initSocket();
 });

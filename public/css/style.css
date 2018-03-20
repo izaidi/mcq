@@ -13,10 +13,11 @@ body {
   background-image: url(../torch.png);
   position: fixed;
   z-index: 100;
-  left: 20%;
+  left: 10%;
   top: 12%;
   background-size: contain;
   background-repeat: no-repeat;
+  transform-origin: 50% 100%;
 }
 
 .cauldron {
