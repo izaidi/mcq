@@ -3,7 +3,7 @@
  * We believe in an open Internet of Things
  */
 
-const TORCH_ID = 'ac233fa039d7'; // Configure the torch ID here
+const TORCH_ID = 'ac233fa039bb'; // Configure the torch ID here
 const HTTP_PORT = 3000;
 
 

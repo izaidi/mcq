@@ -3,6 +3,7 @@ sparkY = 0;
 
 flameX = 0;
 flameY = 0;
+cauldronWidth = 0;
 
 lastAngle = 0;
 maxAngle = 180;
@@ -69,6 +70,7 @@ function sizeTorch() {
 
 function sizeCauldron() {
   var size = $('.cauldron').width();
+  cauldronWidth = size;
   $('.cauldron').css({
     height: size+'px'
   });

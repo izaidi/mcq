@@ -9,7 +9,7 @@ var flameParticles = [];
 var max = 45;
 var speed = 3;
 var torchFlameSize = 20;
-var cauldronFlameSize = 60;
+var cauldronFlameSize = 20;
 
 //The class we will use to store particles. It includes x and y
 //coordinates, horizontal and vertical speed, and how long it's
@@ -118,7 +118,8 @@ function updateFlame() {
   for (var i=0; i<10; i++) {
     
     //Adds a particle at the mouse position, with random horizontal and vertical speeds
-    var p = new Particle(flameX, flameY, (Math.random()*2*speed-speed)/2, 0-Math.random()*2*speed);
+    var particleOffset = (Math.random() - 0.5) * (cauldronWidth / 2);
+    var p = new Particle(flameX + particleOffset, flameY, (Math.random()*2*speed-speed)/2, 0-Math.random()*2*speed);
     flameParticles.push(p);
   }
   
