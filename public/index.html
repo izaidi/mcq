@@ -3,14 +3,27 @@
 
 <head>
   <meta charset="UTF-8">
-	<title>Virtual Torch</title>
+	<title>Torche Olympique</title>
+  <link rel="stylesheet" href="css/fonts.css">
 	<link rel="stylesheet" href="css/style.css">
   <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
   <script src="js/socket.io.slim.js"></script>
+  <script src="js/howler.min.js"></script>
   <script src="js/main.js"></script>
 </head>
 
 <body>
+  <div class="ui-intro">
+    <div class="headline">Viens allumer la vasque olympique !</div>
+    <div class="hint">
+      En 1976, partout sur la planète, plusieurs millions de personnes ont vu la torche olympique créée par Michel Dallaire.
+    </div>
+    <div class="highlighted hint">
+      Viens prendre la torche olympique miniature dans ta main et observe ce qui arrive à l’écran !
+    </div>
+  </div>
+  <div class="black-pane"></div>
   <div class="torch">
     <div class="spark"></div>
   </div>

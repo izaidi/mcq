@@ -6,8 +6,8 @@ var height = 400;
 var particles = [];
 var flameParticles = [];
 
-var max = 20;
-var speed = 6;
+var max = 25;
+var speed = 5;
 var torchFlameSize = 20;
 var cauldronFlameSize = 20;
 
@@ -152,6 +152,3 @@ function updateFlame() {
     }
   }
 }
-
-
-initFire();

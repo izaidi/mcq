@@ -30,6 +30,13 @@ $.fn.animateRotate = function(angle, duration, easing, complete) {
   });
 };
 
+function igniteCauldron() {
+  console.log('flame is lit!');
+  flameOn = true;
+  maxAngle = lastAngle;
+  playTheme();
+}
+
 function getIgnitionAngle() {
   var torchHeight = $('.torch').height();
   var torchY = $('.torch').offset().top;
@@ -52,9 +59,7 @@ function checkFlame() {
     return true;
   } else {
     if (sparkY >= flameY - 5) {
-      console.log('flame is lit!');
-      flameOn = true;
-      maxAngle = lastAngle;
+      igniteCauldron();
     }
   }
 }
@@ -123,6 +128,10 @@ function increaseTilt() {
 
 $(document).keydown(function(e) {
   switch(e.which) {
+    case 32: // spacebar
+      beginCeremony();
+      break;
+
     case 37: // left
       decreaseTilt();
       break;
@@ -148,7 +157,61 @@ function initSocket() {
   });
 }
 
+function playTheme() {
+  musicLoop.fade(1, 0, 2000);
+  var theme = new Howl({
+    src: ['audio/cauldron.mp3'],
+    autoplay: true,
+    volume: 0,
+  });
+  theme.fade(0, 1, 1000);
+}
+
+function initMusic() {
+  musicLoop = new Howl({
+    src: ['audio/jupiter-loop.mp3'],
+    autoplay: true,
+    loop: true,
+    volume: 0.2,
+  });
+  musicLoop.fade(0.2, 1, 3000);
+}
+
+function beginCeremony() {
+  $('.ui-intro').fadeOut(200);
+  $('.black-pane').fadeOut(1000, function() {
+    $('.cauldron').css({zIndex: 101});
+  });
+  bounceTorch = false;
+  $('.torch').finish();
+  initFire();
+  initMusic();
+}
+
+function initUI() {
+  bounceTorch = true;
+  function loop() {
+    if (!bounceTorch) return false;
+    $('.torch').animate ({
+      top: '-=30',
+    }, 1000, 'easeInOutQuad', function() {
+      $('.torch').animate({
+        top: '+=30'
+      }, 1000, 'easeInOutQuad', function() {
+        if (bounceTorch) loop();
+      })
+    });
+  }
+      
+  loop();
+
+  $('.torch').one('click', function() {
+    beginCeremony();
+  });
+}
+
 $(document).ready(function() {
   initTorch();
   initSocket();
+  initUI();
 });

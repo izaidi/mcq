@@ -10,6 +10,8 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-color: black;
+  font-family: 'PT Sans Narrow', sans-serif;
+  color: white;
 }
 
 .torch {
@@ -26,7 +28,7 @@ body {
 .cauldron {
   background-image: url(cauldron.png);
   position: fixed;
-  z-index: 100;
+  z-index: 97;
   background-size: contain;
   background-repeat: no-repeat;
   left: 30%;
@@ -39,6 +41,42 @@ body {
   position: absolute;
   width: 1px;
   height: 1px;
+}
+
+.black-pane {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.8;
+  z-index: 98;
+}
+
+.ui-intro {
+  position: fixed;
+  z-index: 99;
+  width: 50%;
+  left: 25%;
+  padding-top: 100px;
+  font-size: 36px;
+  text-align: center;
+}
+
+.headline {
+  font-size: 48px;
+  margin-bottom: 30px;
+}
+
+.hint {
+  opacity: 0.8;
+  margin-bottom: 30px;
+}
+
+.highlighted {
+  opacity: 1.0;
+  font-weight: bold;
 }
 
 canvas {
