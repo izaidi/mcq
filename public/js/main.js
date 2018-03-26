@@ -10,7 +10,10 @@ maxAngle = 180;
 ignitionAngle = 90;
 
 flameOn = false;
+activated = false;
+lastData = null;
 
+TILT_THRESHOLD = 0.05; // amount of tilt between 0 and 1 that indicates user has picked up the torch
 TILT_INCREMENT = 5;
 
 $.fn.animateRotate = function(angle, duration, easing, complete) {
@@ -151,9 +154,15 @@ function initSocket() {
   var socket = io.connect(url);
   socket.on('torch', function (data) {
     console.log('Data received!');
+    var diff = _.omit(lastData, function(v,k) { return Math.abs(data[k] - v) > TILT_THRESHOLD; })
+    if(Object.keys(diff).length > 0) {
+      beginCeremony();
+    }
+    if (!activated) return false;
     var tiltAngle = Math.abs(data.verticalDeviations.maximum) * 90;
     console.log('Rotating to ' + tiltAngle + ' degrees...');
     $('.torch').animateRotate(tiltAngle);
+    lastData = data;
   });
 }
 
@@ -179,6 +188,7 @@ function initMusic() {
 }
 
 function beginCeremony() {
+  activated = true;
   $('.ui-intro').fadeOut(200);
   $('.black-pane').fadeOut(1000, function() {
     $('.cauldron').css({zIndex: 101});
