@@ -154,8 +154,10 @@ function initSocket() {
   var socket = io.connect(url);
   socket.on('torch', function (data) {
     console.log('Data received!');
-    var diff = _.omit(lastData, function(v,k) { return Math.abs(data[k] - v) > TILT_THRESHOLD; })
-    if(Object.keys(diff).length > 0) {
+    var diff = _.omit(lastData, function(v,k) {
+      return Math.abs(data[k] - v) > TILT_THRESHOLD; 
+    });
+    if(Object.keys(diff).length > 0) { // check if data has changed
       beginCeremony();
     }
     if (!activated) return false;
