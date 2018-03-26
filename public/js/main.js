@@ -137,7 +137,8 @@ $(document).keydown(function(e) {
 });
 
 function initSocket() {
-  var url = $location.protocol() + '://' + $location.host() + ':' + $location.port();
+  var url = $(location).attr('origin');
+  console.log(url);
   var socket = io.connect(url);
   socket.on('torch', function (data) {
     console.log('Data received!');

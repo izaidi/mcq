@@ -6,11 +6,14 @@ body, html {
 }
 
 body {
+  background-image: url(bg.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
   background-color: black;
 }
 
 .torch {
-  background-image: url(../torch.png);
+  background-image: url(torch.png);
   position: fixed;
   z-index: 100;
   left: 10%;
@@ -21,7 +24,7 @@ body {
 }
 
 .cauldron {
-  background-image: url(../cauldron.png);
+  background-image: url(cauldron.png);
   position: fixed;
   z-index: 100;
   background-size: contain;
