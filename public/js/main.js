@@ -92,7 +92,7 @@ function positionSpark() {
 function positionFlame() {
   var cauldronWidth = $('.cauldron').width();
   var left = cauldronWidth / 2;
-  var top = left * 0.2;
+  var top = left * 0.15;
   $('.flame').css({
     left: left+'px',
     top: top+'px'
@@ -137,7 +137,8 @@ $(document).keydown(function(e) {
 });
 
 function initSocket() {
-  var socket = io.connect('http://localhost:3000');
+  var url = $location.protocol() + '://' + $location.host() + ':' + $location.port();
+  var socket = io.connect(url);
   socket.on('torch', function (data) {
     console.log('Data received!');
     var tiltAngle = Math.abs(data.verticalDeviations.maximum) * 90;

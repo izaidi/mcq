@@ -11,10 +11,11 @@ const http = require('http');
 const express = require('express');
 const barnowl = require('barnowl');
 const socketio = require('socket.io');
+const path = require('path');
 
 
 var app = express();
-app.use(express.static('public'));
+app.use(express.static(path.resolve(__dirname + '/public')));
 var server = http.createServer(app);
 var io = socketio(server);
 

@@ -6,8 +6,8 @@ var height = 400;
 var particles = [];
 var flameParticles = [];
 
-var max = 45;
-var speed = 3;
+var max = 20;
+var speed = 6;
 var torchFlameSize = 20;
 var cauldronFlameSize = 20;
 
