@@ -158,23 +158,24 @@ function initSocket() {
 }
 
 function playTheme() {
+  cauldronMusic.play();
   musicLoop.fade(1, 0, 2000);
-  var theme = new Howl({
-    src: ['audio/cauldron.mp3'],
-    autoplay: true,
-    volume: 0,
-  });
-  theme.fade(0, 1, 1000);
+  cauldronMusic.fade(0, 1, 1000);
 }
 
 function initMusic() {
   musicLoop = new Howl({
     src: ['audio/jupiter-loop.mp3'],
-    autoplay: true,
+    autoplay: false,
     loop: true,
     volume: 0.2,
   });
-  musicLoop.fade(0.2, 1, 3000);
+  
+  cauldronMusic = new Howl({
+    src: ['audio/cauldron.mp3'],
+    autoplay: false,
+    volume: 0,
+  });
 }
 
 function beginCeremony() {
@@ -184,8 +185,9 @@ function beginCeremony() {
   });
   bounceTorch = false;
   $('.torch').finish();
+  musicLoop.play();
+  musicLoop.fade(0.2, 1, 3000);
   initFire();
-  initMusic();
 }
 
 function initUI() {
@@ -213,5 +215,6 @@ function initUI() {
 $(document).ready(function() {
   initTorch();
   initSocket();
+  initMusic();
   initUI();
 });
