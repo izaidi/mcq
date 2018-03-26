@@ -60,7 +60,7 @@ function initFire() {
     });
     
     //Update the particles every frame
-    var timer=setInterval(update,40);
+    var timer=setInterval(update,50);
     
   } else {
     alert("Canvas not supported.");
