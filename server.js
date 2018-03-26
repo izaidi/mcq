@@ -66,7 +66,7 @@ function testEmitter() {
   io.emit('torch', { minew: 'foo', verticalDeviations: verticalDeviations });
 }
 
-setInterval(testEmitter, 2000);
+//setInterval(testEmitter, 2000);
 
 
 // Calculate the orientation angle from the acceleration in the given axis.
