@@ -11,6 +11,7 @@ var speed = 5;
 var torchFlameSize = 20;
 var cauldronFlameSize = 20;
 var particlesPerFrame = 8;
+var updateInterval = 75;
 
 //The class we will use to store particles. It includes x and y
 //coordinates, horizontal and vertical speed, and how long it's
@@ -66,7 +67,7 @@ function initFire() {
     });
     
     //Update the particles every frame
-    var timer=setInterval(update,60);
+    var timer=setInterval(update, updateInterval);
     
   } else {
     alert("Canvas not supported.");
