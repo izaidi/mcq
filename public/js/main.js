@@ -239,6 +239,7 @@ function restart() {
   cauldronMusic.unload();
   paused = true;
   flameOn = false;
+  activated = false;
   $('.ui-intro').fadeIn(300);
   $('.torch').animateRotate(0)
   $('.black-pane').fadeIn(300, function() {
