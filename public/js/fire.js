@@ -10,6 +10,7 @@ var max = 25;
 var speed = 5;
 var torchFlameSize = 20;
 var cauldronFlameSize = 20;
+var particlesPerFrame = 8;
 
 //The class we will use to store particles. It includes x and y
 //coordinates, horizontal and vertical speed, and how long it's
@@ -20,6 +21,11 @@ function Particle(x, y, xs, ys) {
   this.xs=xs;
   this.ys=ys;
   this.life=0;
+}
+
+function resetFire() {
+  particles = [];
+  flameParticles = [];
 }
 
 function resizeCanvas() {
@@ -60,7 +66,7 @@ function initFire() {
     });
     
     //Update the particles every frame
-    var timer=setInterval(update,50);
+    var timer=setInterval(update,60);
     
   } else {
     alert("Canvas not supported.");
@@ -77,11 +83,12 @@ function update() {
 function updateFire() {
 
   //Adds ten new particles every frame
-  for (var i=0; i<10; i++) {
-    
-    //Adds a particle at the mouse position, with random horizontal and vertical speeds
-    var p = new Particle(sparkX, sparkY, (Math.random()*2*speed-speed)/2, 0-Math.random()*2*speed);
-    particles.push(p);
+  if (torchOn) {
+    for (var i=0; i<particlesPerFrame; i++) {
+      //Adds a particle at the mouse position, with random horizontal and vertical speeds
+      var p = new Particle(sparkX, sparkY, (Math.random()*2*speed-speed)/2, 0-Math.random()*2*speed);
+      particles.push(p);
+    }
   }
   
   //Clear the stage so we can draw the new frame
@@ -115,7 +122,7 @@ function updateFire() {
 function updateFlame() {
 
   //Adds ten new particles every frame
-  for (var i=0; i<10; i++) {
+  for (var i=0; i<particlesPerFrame; i++) {
     
     //Adds a particle at the mouse position, with random horizontal and vertical speeds
     var particleOffset = (Math.random() - 0.5) * (cauldronWidth / 2);

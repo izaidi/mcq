@@ -9,12 +9,16 @@ lastAngle = 0;
 maxAngle = 180;
 ignitionAngle = 90;
 
+paused = false;
+torchOn = false;
 flameOn = false;
 activated = false;
 lastData = null;
 
 TILT_THRESHOLD = 0.05; // amount of tilt between 0 and 1 that indicates user has picked up the torch
 TILT_INCREMENT = 5;
+
+RESET_INTERVAL = 25000;
 
 $.fn.animateRotate = function(angle, duration, easing, complete) {
   var args = $.speed(duration, easing, complete);
@@ -34,10 +38,13 @@ $.fn.animateRotate = function(angle, duration, easing, complete) {
 };
 
 function igniteCauldron() {
+  if (flameOn || paused) return false;
   console.log('flame is lit!');
+  torchOn = false;
   flameOn = true;
   maxAngle = lastAngle;
   playTheme();
+  setTimeout(endCeremony, RESET_INTERVAL);
 }
 
 function getIgnitionAngle() {
@@ -148,33 +155,54 @@ $(document).keydown(function(e) {
   e.preventDefault(); // prevent the default action (scroll / move caret)
 });
 
+function diffData(data) {
+  var diff = _.omit(lastData, function(v,k) {
+    return Math.abs(data[k] - v) > TILT_THRESHOLD; 
+  });
+  return diff;
+}
+
+function isTorchMoving(data) {
+  var diff = diffData(data);
+  return Object.keys(diff).length > 0;
+} 
+
+function isTorchAtRest(data) {
+  var diff = diffData(data);
+  return Object.keys(diff).length == 0;
+}
+
 function initSocket() {
   var url = $(location).attr('origin');
   console.log(url);
   var socket = io.connect(url);
   socket.on('torch', function (data) {
     console.log('Data received!');
-    var diff = _.omit(lastData, function(v,k) {
-      return Math.abs(data[k] - v) > TILT_THRESHOLD; 
-    });
-    if(Object.keys(diff).length > 0) { // check if data has changed
-      beginCeremony();
+    if (!activated) {
+      if (isTorchMoving(data)) {
+        beginCeremony();
+      }
+    } else {
+    /*  if (readyToRestart && isTorchAtRest(data)) {
+        restart();
+      }*/
+      var tiltAngle = Math.abs(data.verticalDeviations.maximum) * 90;
+      console.log('Rotating to ' + tiltAngle + ' degrees...');
+      $('.torch').animateRotate(tiltAngle);
+      lastData = data;
     }
-    if (!activated) return false;
-    var tiltAngle = Math.abs(data.verticalDeviations.maximum) * 90;
-    console.log('Rotating to ' + tiltAngle + ' degrees...');
-    $('.torch').animateRotate(tiltAngle);
-    lastData = data;
   });
 }
 
 function playTheme() {
+  console.log('playing theme');
+  musicLoop.unload();
   cauldronMusic.play();
-  musicLoop.fade(1, 0, 2000);
   cauldronMusic.fade(0, 1, 1000);
 }
 
 function initMusic() {
+  console.log('initing music');
   musicLoop = new Howl({
     src: ['audio/jupiter-loop.mp3'],
     autoplay: false,
@@ -199,7 +227,28 @@ function beginCeremony() {
   $('.torch').finish();
   musicLoop.play();
   musicLoop.fade(0.2, 1, 3000);
+  torchOn = true;
   initFire();
+}
+
+function endCeremony() {
+  restart();
+}
+
+function restart() {
+  cauldronMusic.unload();
+  paused = true;
+  flameOn = false;
+  $('.ui-intro').fadeIn(300);
+  $('.torch').animateRotate(0)
+  $('.black-pane').fadeIn(300, function() {
+    $('.cauldron').css({zIndex: 97});
+    positionSpark();
+    initUI();
+    initMusic();
+    resetFire();
+    paused = false;
+  });
 }
 
 function initUI() {
