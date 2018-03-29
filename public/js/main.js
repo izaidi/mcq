@@ -45,6 +45,7 @@ function igniteCauldron() {
   maxAngle = lastAngle;
   playTheme();
   setTimeout(endCeremony, RESET_INTERVAL);
+  Messages.show('completion');
 }
 
 function getIgnitionAngle() {
@@ -229,6 +230,7 @@ function beginCeremony() {
   musicLoop.fade(0.2, 1, 3000);
   torchOn = true;
   initFire();
+  Messages.show('manipulation', 2000);
 }
 
 function endCeremony() {
@@ -237,19 +239,19 @@ function endCeremony() {
 
 function restart() {
   cauldronMusic.unload();
+  Messages.hide();
   paused = true;
   flameOn = false;
   activated = false;
   $('.ui-intro').fadeIn(300);
   $('.torch').animateRotate(0)
-  $('.black-pane').fadeIn(300, function() {
-    $('.cauldron').css({zIndex: 97});
-    positionSpark();
-    initUI();
-    initMusic();
-    resetFire();
-    paused = false;
-  });
+  $('.black-pane').fadeIn(0);
+  $('.cauldron').css({zIndex: 97});
+  positionSpark();
+  initUI();
+  initMusic();
+  resetFire();
+  paused = false;
 }
 
 function initUI() {
