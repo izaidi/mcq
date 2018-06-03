@@ -58,9 +58,9 @@ middleware.on('visibilityEvent', function(tiraid) {
 
 function testEmitter() {
   var verticalDeviations = {
-    x: 0.5,
-    z: 0.3,
-    maximum: 0.5
+    x: 0.1+Math.random()*0.1,
+    z: 0.1+Math.random()*0.1,
+    maximum: 0.1+Math.random()*0.1
   };
   console.log('Sending test data...');
   io.emit('torch', { minew: 'foo', verticalDeviations: verticalDeviations });

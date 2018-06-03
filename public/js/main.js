@@ -157,8 +157,11 @@ $(document).keydown(function(e) {
 });
 
 function diffData(data) {
-  var diff = _.omit(lastData, function(v,k) {
-    return Math.abs(data[k] - v) > TILT_THRESHOLD; 
+  if (lastData == null || !lastData.hasOwnProperty('verticalDeviations')) {
+    return {};
+  }
+  var diff = _.omit(lastData.verticalDeviations, function(v,k) {
+    return Math.abs(data.verticalDeviations[k] - v) < TILT_THRESHOLD; 
   });
   return diff;
 }
@@ -179,7 +182,9 @@ function initSocket() {
   var socket = io.connect(url);
   socket.on('torch', function (data) {
     console.log('Data received!');
+    console.log(data);
     if (!activated) {
+      console.log('not activated');
       if (isTorchMoving(data)) {
         beginCeremony();
       }
@@ -190,8 +195,8 @@ function initSocket() {
       var tiltAngle = Math.abs(data.verticalDeviations.maximum) * 90;
       console.log('Rotating to ' + tiltAngle + ' degrees...');
       $('.torch').animateRotate(tiltAngle);
-      lastData = data;
     }
+    lastData = data;
   });
 }
 
